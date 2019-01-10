@@ -1,10 +1,10 @@
 <template>
-<div :style = "containerStyle" class = "container">
-  <div v-if = "!collapse" :style = "sidebarStyle" class = "side-bar">
+<div :style = "containerStyle" class = "mainside-container">
+  <div v-if = "!collapse" :style = "sidebarStyle" class = "mainside-side">
     <slot name = "mainside-side">
     </slot>
   </div>
-  <div class = "main-content">
+  <div class = "mainside-main">
     <slot name = "mainside-main">
     </slot>
   </div>
@@ -54,13 +54,13 @@ export default {
 }
 </script>
 <style scoped>
-.container
+.mainside-container
 {
   width: 100%;
   height: 100%;
   display: flex;
 }
-.main-content
+.mainside-main
 {
   flex: 1 1 0px;
 }
