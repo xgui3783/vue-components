@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "Xiao Gui <xgui3783@gmail.com>",
+  "main": "src/export.js",
   "private": true,
   "scripts": {
     "build-webjugex" : "webpack --config build/webpack.prod.webjugex.conf.js",

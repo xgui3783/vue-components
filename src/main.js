@@ -6,6 +6,7 @@ import AutoComplete from './components/autocomplete.vue'
 import CopyField from './components/copyfield.vue'
 import Readmore from './components/readmore.vue'
 import CheckBox from './components/checkbox.vue'
+import MainSide from './components/mainside'
 
 Vue.config.productionTip = false
 
@@ -20,3 +21,4 @@ Vue.component('vue-autocomplete', AutoComplete)
 Vue.component('vue-copyfield', CopyField)
 Vue.component('vue-readmore', Readmore)
 Vue.component('vue-checkbox', CheckBox)
+Vue.component('vue-mainside', MainSide)

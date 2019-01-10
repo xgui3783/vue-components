@@ -60,6 +60,25 @@
     {
       margin-top:1em;
     }
+
+    #mainside
+    {
+      width: 500px;
+      height: 500px;
+    }
+
+    #mainside-side
+    {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 210, 210, 0.5);
+    }
+    #mainside-main
+    {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 210, 0.5);
+    }
     </style>
   </head>
   <body>
@@ -80,6 +99,7 @@
         button vue
       </button>
     </div>
+    <hr />
     <div id = "autocomplete">
       <vue-autocomplete 
         @selectslice = "$emit('selectslice',$event)"
@@ -89,11 +109,13 @@
 
       </vue-autocomplete>
     </div>
+    <hr />
     <div id = "copyfield">
       <vue-copyfield :value = "value">
 
       </vue-copyfield>
     </div>
+    <hr />
     <div id = "readmore">
       <vue-readmore>
         <template slot = "readmoreContent">
@@ -107,12 +129,50 @@
         </template>
       </vue-readmore>
     </div>
+    <hr />
     <div id = "checkbox">
       <vue-checkbox 
         :flag = "flag"
         @togglecheckbox = "togglecheckbox">
 
       </vue-checkbox>
+    </div>
+    <hr />
+    <div id = "mainside">
+      <vue-mainside 
+        :collapse = "collapse"
+        :sidebar-size = "sidebarSize" 
+        :position = "position">
+        
+        <template slot = "mainside-side">
+          <div id = "mainside-side">
+            SIDE BAR
+          </div>
+        </template>
+        <template slot = "mainside-main">
+          <div id = "mainside-main">
+            <select v-model = "position">
+              <option value="top">top</option>
+              <option value="left">left</option>
+              <option value="right">right</option>
+              <option value="bottom">bottom</option>
+            </select>
+            width: {{ sidebarSize }}
+            <input 
+              type = "range" 
+              v-model = "sidebarSize"
+              min = "1" 
+              max = "500" 
+              step = "1"
+            />
+            
+            <vue-checkbox 
+              :flag = "collapse"
+              @togglecheckbox = "toggle">
+            </vue-checkbox>
+          </div>
+        </template>
+      </vue-mainside>
     </div>
   </body>
   <footer>
@@ -681,6 +741,22 @@
               this.flag = !this.flag
             }
           }
+      })
+
+      const mainside = new Vue({
+        el: '#mainside',
+        data: function () {
+          return {
+            position: 'top',
+            sidebarSize: 150,
+            collapse: false
+          }
+        },
+        methods: {
+          toggle: function () {
+            this.collapse = !this.collapse
+          }
+        }
       })
     </script>
   </footer>
