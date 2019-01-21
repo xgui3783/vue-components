@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>vue-components</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <style>
+    body,
+    html
+    {
+      margin: 0;
+      padding: 0;
+      width:100%;
+      height:100%;
+    }
+
+    body
+    {
+      position:relative;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+      opacity: 0;
+    }
+
+    #modal-body
+    {
+      background-color : white;
+      padding: 1em;
+      border-radius : 5px;
+      box-shadow: 0 5px 10px -3px rgba(0,0,0,0.3);
+    }
+
+    .pill
+    {
+      box-shadow: 0 2px 5px -1px rgba(0,0,0,0.7);
+    }
+
+    #autocomplete
+    {
+      width: 10em;
+    }
+
+    #copyfield
+    {
+      width:20em;
+    }
+
+    #readmore
+    {
+      width : 10em;
+    }
+
+    #checkbox
+    {
+      margin-top:1em;
+    }
+
+    #mainside
+    {
+      width: 500px;
+      height: 500px;
+    }
+
+    #mainside-side
+    {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 210, 210, 0.5);
+    }
+    #mainside-main
+    {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 210, 0.5);
+    }
+    </style>
+  </head>
+  <body>
+    <div id = "modal">
+      <transition name = "fade">
+        <vue-modal @close-modal = "closeModal" v-show = "show">
+          <template slot = "v-modal-body">
+            <div id = "modal-body">
+              MODAL BODY!
+
+              <vue-pill class = "pill" :name = "'test pill'">
+              </vue-pill>
+            </div>
+          </template>
+        </vue-modal>
+      </transition>
+      <button @click = "show = true">
+        button vue
+      </button>
+    </div>
+    <hr />
+    <div id = "autocomplete">
+      <vue-autocomplete 
+        @selectslice = "$emit('selectslice',$event)"
+        :rawarray = "autocompleteArray" 
+        :placeholder = "placeholder" 
+        ref = "autocomplete">
+
+      </vue-autocomplete>
+    </div>
+    <hr />
+    <div id = "copyfield">
+      <vue-copyfield :value = "value">
+
+      </vue-copyfield>
+    </div>
+    <hr />
+    <div id = "readmore">
+      <vue-readmore>
+        <template slot = "readmoreContent">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </template>
+        <template slot = "resizeSliverContentCollapsed">
+            err... read more (?)
+        </template>
+        <template slot = "resizeSliverContentShown">
+            hide it
+        </template>
+      </vue-readmore>
+    </div>
+    <hr />
+    <div id = "checkbox">
+      <vue-checkbox 
+        :flag = "flag"
+        @togglecheckbox = "togglecheckbox">
+
+      </vue-checkbox>
+    </div>
+    <hr />
+    <div id = "mainside">
+      <vue-mainside 
+        :collapse = "collapse"
+        :sidebar-size = "sidebarSize" 
+        :position = "position">
+        
+        <template slot = "mainside-side">
+          <div id = "mainside-side">
+            SIDE BAR
+          </div>
+        </template>
+        <template slot = "mainside-main">
+          <div id = "mainside-main">
+            <select v-model = "position">
+              <option value="top">top</option>
+              <option value="left">left</option>
+              <option value="right">right</option>
+              <option value="bottom">bottom</option>
+            </select>
+            width: {{ sidebarSize }}
+            <input 
+              type = "range" 
+              v-model = "sidebarSize"
+              min = "1" 
+              max = "500" 
+              step = "1"
+            />
+            
+            <vue-checkbox 
+              :flag = "collapse"
+              @togglecheckbox = "toggle">
+            </vue-checkbox>
+          </div>
+        </template>
+      </vue-mainside>
+    </div>
+  </body>
+  <footer>
+    <script>
+      const testMetadata = {
+    "imagesMetadata": [
+        {
+            "brainID": "B21",
+            "id": "609ac17cc1465ac9183b52f2234f5e8c3ee592494e37fa1bf92efd097346bf3b6bf7c70567b2268190c03c47bd137cbf6da0ef558a89e31201be185132ae4730",
+            "imageHeight": 4617,
+            "imageWidth": 3231,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0007_TS02_Pyramid.tif",
+            "sectionID": "7"
+        },
+        {
+            "brainID": "B21",
+            "id": "52c607a98aa1c7243d42e949a5783452966e4c3e5c5f946b2786e6a8456cebeb0d9fc3d0621b3d3954ab3534a218ff4a254abeb36fe5261a02b0640b4ec143ef",
+            "imageHeight": 4502,
+            "imageWidth": 3693,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0008_TS02_Pyramid.tif",
+            "sectionID": "8"
+        },
+        {
+            "brainID": "B21",
+            "id": "046ad449c5534a5dcd70c5772d543653d36e11920980e059dce186b5f1de72bd8ebc475b9815f96ada1d4798ee4b394b2887e6bdf71848b0b0e7e08a65445b96",
+            "imageHeight": 4964,
+            "imageWidth": 4848,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0009_TS02_Pyramid.tif",
+            "sectionID": "9"
+        },
+        {
+            "brainID": "B21",
+            "id": "ee29e50919b67714d2b1148332860c9c8066c29cb37a3d724c75958a484b8617cea893769291fe2bfa27be2d8f4c8693061e9520dbf2cae1c2976a5f5a503519",
+            "imageHeight": 4271,
+            "imageWidth": 4962,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0010_TS02_Pyramid.tif",
+            "sectionID": "10"
+        },
+        {
+            "brainID": "B21",
+            "id": "0f42d3bdd91f6c134509c6152dc1012c8f71402f906f2e67f9ce3a115e39eb53293eb1323601bb4d35b3f515b6f31e6dcfde50ed7e1d827679a3d1e6fa1658c5",
+            "imageHeight": 4502,
+            "imageWidth": 5308,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0011_TS02_Pyramid.tif",
+            "sectionID": "11"
+        },
+        {
+            "brainID": "B21",
+            "id": "6a4d9ac7d32f952f62ae63348a990e1a7c0999a887974b497ff4bc4783b89a44d41c82cf4dec5eb018f9154a3b3909458e757752011db38562508692a0d2794b",
+            "imageHeight": 4382,
+            "imageWidth": 5201,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0012_TS02_Pyramid.tif",
+            "sectionID": "12"
+        },
+        {
+            "brainID": "B21",
+            "id": "33a4f95aa9dfec77fb0a05598a9d4de3f115be9ab11ae32b59ddd8536d82d11841fdd2f2be0d55858eff4386da0fa7985c235672d4faa7086204099c4d559862",
+            "imageHeight": 4842,
+            "imageWidth": 5668,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0013_TS02_Pyramid.tif",
+            "sectionID": "13"
+        },
+        {
+            "brainID": "B21",
+            "id": "6bbd8f8f58e22954692cb4bacfaa67d7a9b55ae9aa2b2d7434d25004edbf9df1c4d462ed0177709bdfef625a5991c48b639184f75d4aca99d4972377ca1e892b",
+            "imageHeight": 4958,
+            "imageWidth": 6239,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0014_TS02_Pyramid.tif",
+            "sectionID": "14"
+        },
+        {
+            "brainID": "B21",
+            "id": "39803e7a4b714ef819a7b12247e6c89104b07325a33d8fea8deb58be72beda5b5d38b54b4a8412153be7ca071ae7bff8a8915b36f4806025f7e9b416d3169b3b",
+            "imageHeight": 5073,
+            "imageWidth": 5784,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0015_TS02_Pyramid.tif",
+            "sectionID": "15"
+        },
+        {
+            "brainID": "B21",
+            "id": "d27a701ce5eff06943c5b523ffb04dca9f02357eeb306a313b9bf9c3350bab67fd4eef31e0632b6ab84124d768dfb24188d26eeefb809f221f1e8f0e64db0fd5",
+            "imageHeight": 5420,
+            "imageWidth": 6009,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0016_TS02_Pyramid.tif",
+            "sectionID": "16"
+        },
+        {
+            "brainID": "B21",
+            "id": "c0f3351cfbc39afae8ca09323374849aff25756237bc47687dca4351ed8a5872877225872fd069a3da859fc40a817e9d5f0fb0d6a88944ff3b04f22a693c7651",
+            "imageHeight": 5535,
+            "imageWidth": 6482,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0017_TS02_Pyramid.tif",
+            "sectionID": "17"
+        },
+        {
+            "brainID": "B21",
+            "id": "f6ba79b9c94a9504606eb97f7a85ca19325c2dc10f9b54d2bf9f0dbb58ed99edce7d59494a54c78191418372f859e28394d47bd2b7808fb4fb0cd7ec8fd4f3af",
+            "imageHeight": 5534,
+            "imageWidth": 6599,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0018_TS02_Pyramid.tif",
+            "sectionID": "18"
+        },
+        {
+            "brainID": "B21",
+            "id": "94d101d294961bdd510f3fd4e67c15ff0f3e8cefdb19ebc975ccec1377eec7ec022251025c0189938d77b3e278916cc5a4c9b67ca1f68ec9884451a8656e44d5",
+            "imageHeight": 6573,
+            "imageWidth": 7401,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0019_TS02_Pyramid.tif",
+            "sectionID": "19"
+        },
+        {
+            "brainID": "B21",
+            "id": "775d9b729aa0ea1f3e53ca188010aee662b5ef29260634eaf8ad4dc2602b490dd7795a95173503aa9437ad8f1fa4de2963483c1b4645287a28d60803972d41f5",
+            "imageHeight": 6573,
+            "imageWidth": 7168,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0020_TS02_Pyramid.tif",
+            "sectionID": "20"
+        },
+        {
+            "brainID": "B21",
+            "id": "732029f164eb1913d169fbf3bfe244d60e6759f13841b1ccb921bb11adda55fb4326ebc80dd88f3767f8476ff5a4cfb2900148a686882cd41ec28f663952ba98",
+            "imageHeight": 6688,
+            "imageWidth": 7285,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0021_TS02_Pyramid.tif",
+            "sectionID": "21"
+        },
+        {
+            "brainID": "B21",
+            "id": "157ca9425de34ccd78876ae93a2646279accd00bde860453995b62e6bd932ccf841e81c343c2576d010e6f5f60e15f380f1a090a68f8af789f848153728589f1",
+            "imageHeight": 6689,
+            "imageWidth": 7156,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0022_TS02_Pyramid.tif",
+            "sectionID": "22"
+        },
+        {
+            "brainID": "B21",
+            "id": "31580f3e2e5080d1367d8908c7f642bb5ac16197de92eefcbe84f95cb6aa2b5cb9c334ba22eed510eb37c0771af1e6c4032a2640f2fc52a3db17913615931760",
+            "imageHeight": 6804,
+            "imageWidth": 7280,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0023_TS02_Pyramid.tif",
+            "sectionID": "23"
+        },
+        {
+            "brainID": "B21",
+            "id": "ce5bdf9aaabc57fdefa950d187ed6765b31ad75cccfc5f42aa03c0ca3a50c367403a468d7ee264d98bfcbcacda5ba9278da11267b6f27c9e1b4981a20a5a163b",
+            "imageHeight": 7035,
+            "imageWidth": 7624,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0024_TS02_Pyramid.tif",
+            "sectionID": "24"
+        },
+        {
+            "brainID": "B21",
+            "id": "9d4960b5602070cd49cc528366b17209372b2291008408b1834c1d6fc5d3f6a9e6c092c5cb2c92799e0975d8c358237728a05e5994b174346419e18ce08668ef",
+            "imageHeight": 7842,
+            "imageWidth": 7285,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0025_TS02_Pyramid.tif",
+            "sectionID": "25"
+        },
+        {
+            "brainID": "B21",
+            "id": "3ac49fd86fcbc886f0ffcd2e4ccd112f225a0aba46c40ad771d7c614f75bf66d75c18ffcbda475266a53d3a89fcd214f4d9039dcf27bb0b8b02bc56e029d5775",
+            "imageHeight": 7381,
+            "imageWidth": 7974,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0026_TS02_Pyramid.tif",
+            "sectionID": "26"
+        },
+        {
+            "brainID": "B21",
+            "id": "14894681bd1e1f9156ee7254381a4e20cfa2b101e814321672ed8c291b5946edbde0d9f0ffe905b1ca5f0b338581bf9ee30b083a625a24ed1de43d473062d27e",
+            "imageHeight": 8762,
+            "imageWidth": 8338,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0027_TS02_Pyramid.tif",
+            "sectionID": "27"
+        },
+        {
+            "brainID": "B21",
+            "id": "4a7a28ce5f2ebd8409f9957eea8a73b0b309c4d7ee76aac69439f4c36bdd06f63faee8c637963eff6a68b6a1d8509de5cd18bcd3d10602ba7e87c8afa21221b4",
+            "imageHeight": 8301,
+            "imageWidth": 8334,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0028_TS02_Pyramid.tif",
+            "sectionID": "28"
+        },
+        {
+            "brainID": "B21",
+            "id": "5aa557d175374cbe027680cc7adf7c0a14492ef1371a5cda00ba2f065f457a8e1848c02f5f42d4495221df6735ae94061ff595898fb1623a8da2e345f11a52fd",
+            "imageHeight": 8301,
+            "imageWidth": 8671,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0029_TS02_Pyramid.tif",
+            "sectionID": "29"
+        },
+        {
+            "brainID": "B21",
+            "id": "bdc707ce3dc43195c5ca0cf9473b0f49382f81018d642a5de3a2c72d2fd7a4eaf643512da2360ce48cd0705f9f4af78e21b1c0aeff99798758a0838471a938c1",
+            "imageHeight": 9224,
+            "imageWidth": 8679,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0030_TS02_Pyramid.tif",
+            "sectionID": "30"
+        },
+        {
+            "brainID": "B21",
+            "id": "31084d8d99bd2aa6134189a5604726103cc7a51675040f9363f4dc7c7c1b6c5d999aec9a9eecf88431eb2cf69f2b8e8d2b82236b413647d840e2e94a21501c23",
+            "imageHeight": 8760,
+            "imageWidth": 9263,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0031_TS02_Pyramid.tif",
+            "sectionID": "31"
+        },
+        {
+            "brainID": "B21",
+            "id": "618d5453d85b1e54d9457dd2c22813bf538e18c2c3c2a4c5d5af9d38e7f4f849bb2ed76913c30dc2c815cba70c1def2405ca39b74a3ca4bacb62c769ca5ab083",
+            "imageHeight": 8993,
+            "imageWidth": 9019,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0032_TS02_Pyramid.tif",
+            "sectionID": "32"
+        },
+        {
+            "brainID": "B21",
+            "id": "f4e2320e1cad00c020d3bc5b77380c8abcaf15eb47a705caf2a73727da68391339bbacac19017f9865ce70c5bd35d1465f0f76c781019df1b6e4eb7ba3de1b85",
+            "imageHeight": 9569,
+            "imageWidth": 9487,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0033_TS02_Pyramid.tif",
+            "sectionID": "33"
+        },
+        {
+            "brainID": "B21",
+            "id": "e95948c977c2347a04da50eae708fb701eca49e6874ad75ceee31fdcc5c0a23984c870fff06ab36e74587f9bc6993d5c6c4faba0cc47e1f233dffe5c88999d8c",
+            "imageHeight": 8992,
+            "imageWidth": 9600,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0034_TS02_Pyramid.tif",
+            "sectionID": "34"
+        },
+        {
+            "brainID": "B21",
+            "id": "11056184879ce07fe762056136eef50d9b1ad5e4b559fa37b181acca56f1e3b005a9a659805871d93c144c6650c88ccaea1289465451d8e653e33eb55288dcdb",
+            "imageHeight": 10046,
+            "imageWidth": 9850,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0035_TS01_Pyramid.tif",
+            "sectionID": "35"
+        },
+        {
+            "brainID": "B21",
+            "id": "07ed228e3158590c7efcc44f9d27cea231acee1ff91db7d41d56231f3ed270df4022c5f2fbc54fa2d71fb452816a944f1c13cf4617cafdfb7c09db2df2ceb506",
+            "imageHeight": 10162,
+            "imageWidth": 9388,
+            "path": "/data/JUST/brainmap/human/B21/scans/B21_0036_TS01_Pyramid.tif",
+            "sectionID": "36"
+        }
+    ],
+    "names": [
+        "609ac17cc1465ac9183b52f2234f5e8c3ee592494e37fa1bf92efd097346bf3b6bf7c70567b2268190c03c47bd137cbf6da0ef558a89e31201be185132ae4730",
+        "52c607a98aa1c7243d42e949a5783452966e4c3e5c5f946b2786e6a8456cebeb0d9fc3d0621b3d3954ab3534a218ff4a254abeb36fe5261a02b0640b4ec143ef",
+        "046ad449c5534a5dcd70c5772d543653d36e11920980e059dce186b5f1de72bd8ebc475b9815f96ada1d4798ee4b394b2887e6bdf71848b0b0e7e08a65445b96",
+        "ee29e50919b67714d2b1148332860c9c8066c29cb37a3d724c75958a484b8617cea893769291fe2bfa27be2d8f4c8693061e9520dbf2cae1c2976a5f5a503519",
+        "0f42d3bdd91f6c134509c6152dc1012c8f71402f906f2e67f9ce3a115e39eb53293eb1323601bb4d35b3f515b6f31e6dcfde50ed7e1d827679a3d1e6fa1658c5",
+        "6a4d9ac7d32f952f62ae63348a990e1a7c0999a887974b497ff4bc4783b89a44d41c82cf4dec5eb018f9154a3b3909458e757752011db38562508692a0d2794b",
+        "33a4f95aa9dfec77fb0a05598a9d4de3f115be9ab11ae32b59ddd8536d82d11841fdd2f2be0d55858eff4386da0fa7985c235672d4faa7086204099c4d559862",
+        "6bbd8f8f58e22954692cb4bacfaa67d7a9b55ae9aa2b2d7434d25004edbf9df1c4d462ed0177709bdfef625a5991c48b639184f75d4aca99d4972377ca1e892b",
+        "39803e7a4b714ef819a7b12247e6c89104b07325a33d8fea8deb58be72beda5b5d38b54b4a8412153be7ca071ae7bff8a8915b36f4806025f7e9b416d3169b3b",
+        "d27a701ce5eff06943c5b523ffb04dca9f02357eeb306a313b9bf9c3350bab67fd4eef31e0632b6ab84124d768dfb24188d26eeefb809f221f1e8f0e64db0fd5",
+        "c0f3351cfbc39afae8ca09323374849aff25756237bc47687dca4351ed8a5872877225872fd069a3da859fc40a817e9d5f0fb0d6a88944ff3b04f22a693c7651",
+        "f6ba79b9c94a9504606eb97f7a85ca19325c2dc10f9b54d2bf9f0dbb58ed99edce7d59494a54c78191418372f859e28394d47bd2b7808fb4fb0cd7ec8fd4f3af",
+        "94d101d294961bdd510f3fd4e67c15ff0f3e8cefdb19ebc975ccec1377eec7ec022251025c0189938d77b3e278916cc5a4c9b67ca1f68ec9884451a8656e44d5",
+        "775d9b729aa0ea1f3e53ca188010aee662b5ef29260634eaf8ad4dc2602b490dd7795a95173503aa9437ad8f1fa4de2963483c1b4645287a28d60803972d41f5",
+        "732029f164eb1913d169fbf3bfe244d60e6759f13841b1ccb921bb11adda55fb4326ebc80dd88f3767f8476ff5a4cfb2900148a686882cd41ec28f663952ba98",
+        "157ca9425de34ccd78876ae93a2646279accd00bde860453995b62e6bd932ccf841e81c343c2576d010e6f5f60e15f380f1a090a68f8af789f848153728589f1",
+        "31580f3e2e5080d1367d8908c7f642bb5ac16197de92eefcbe84f95cb6aa2b5cb9c334ba22eed510eb37c0771af1e6c4032a2640f2fc52a3db17913615931760",
+        "ce5bdf9aaabc57fdefa950d187ed6765b31ad75cccfc5f42aa03c0ca3a50c367403a468d7ee264d98bfcbcacda5ba9278da11267b6f27c9e1b4981a20a5a163b",
+        "9d4960b5602070cd49cc528366b17209372b2291008408b1834c1d6fc5d3f6a9e6c092c5cb2c92799e0975d8c358237728a05e5994b174346419e18ce08668ef",
+        "3ac49fd86fcbc886f0ffcd2e4ccd112f225a0aba46c40ad771d7c614f75bf66d75c18ffcbda475266a53d3a89fcd214f4d9039dcf27bb0b8b02bc56e029d5775",
+        "14894681bd1e1f9156ee7254381a4e20cfa2b101e814321672ed8c291b5946edbde0d9f0ffe905b1ca5f0b338581bf9ee30b083a625a24ed1de43d473062d27e",
+        "4a7a28ce5f2ebd8409f9957eea8a73b0b309c4d7ee76aac69439f4c36bdd06f63faee8c637963eff6a68b6a1d8509de5cd18bcd3d10602ba7e87c8afa21221b4",
+        "5aa557d175374cbe027680cc7adf7c0a14492ef1371a5cda00ba2f065f457a8e1848c02f5f42d4495221df6735ae94061ff595898fb1623a8da2e345f11a52fd",
+        "bdc707ce3dc43195c5ca0cf9473b0f49382f81018d642a5de3a2c72d2fd7a4eaf643512da2360ce48cd0705f9f4af78e21b1c0aeff99798758a0838471a938c1",
+        "31084d8d99bd2aa6134189a5604726103cc7a51675040f9363f4dc7c7c1b6c5d999aec9a9eecf88431eb2cf69f2b8e8d2b82236b413647d840e2e94a21501c23",
+        "618d5453d85b1e54d9457dd2c22813bf538e18c2c3c2a4c5d5af9d38e7f4f849bb2ed76913c30dc2c815cba70c1def2405ca39b74a3ca4bacb62c769ca5ab083",
+        "f4e2320e1cad00c020d3bc5b77380c8abcaf15eb47a705caf2a73727da68391339bbacac19017f9865ce70c5bd35d1465f0f76c781019df1b6e4eb7ba3de1b85",
+        "e95948c977c2347a04da50eae708fb701eca49e6874ad75ceee31fdcc5c0a23984c870fff06ab36e74587f9bc6993d5c6c4faba0cc47e1f233dffe5c88999d8c",
+        "11056184879ce07fe762056136eef50d9b1ad5e4b559fa37b181acca56f1e3b005a9a659805871d93c144c6650c88ccaea1289465451d8e653e33eb55288dcdb",
+        "07ed228e3158590c7efcc44f9d27cea231acee1ff91db7d41d56231f3ed270df4022c5f2fbc54fa2d71fb452816a944f1c13cf4617cafdfb7c09db2df2ceb506"
+    ],
+    "pixelsPerMeter": 1000000,
+    "tileSources": [
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0007_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 4617,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 3231
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0008_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 4502,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 3693
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0009_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 4964,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 4848
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0010_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 4271,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 4962
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0011_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 4502,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 5308
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0012_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 4382,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 5201
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0013_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 4842,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 5668
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0014_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 4958,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 6239
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0015_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 5073,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 5784
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0016_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 5420,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 6009
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0017_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 5535,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 6482
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0018_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 5534,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 6599
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0019_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 6573,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 7401
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0020_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 6573,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 7168
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0021_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 6688,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 7285
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0022_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 6689,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 7156
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0023_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 6804,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 7280
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0024_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 7035,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 7624
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0025_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 7842,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 7285
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0026_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 7381,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 7974
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0027_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 8762,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 8338
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0028_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 8301,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 8334
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0029_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 8301,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 8671
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0030_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 9224,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 8679
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0031_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 8760,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 9263
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0032_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 8993,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 9019
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0033_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 9569,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 9487
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0034_TS02_Pyramid.tif&dataset=/'; }",
+            "height": 8992,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 9600
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0035_TS01_Pyramid.tif&dataset=/'; }",
+            "height": 10046,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 9850
+        },
+        {
+            "getTileUrl": "function( level, x, y ){ return 'http://imedv02.ime.kfa-juelich.de:8202/get_tile?level=' + level + '&y=' + y + '&x=' + x + '&ts=64' + '&img=/data/JUST/brainmap/human/B21/scans/B21_0036_TS01_Pyramid.tif&dataset=/'; }",
+            "height": 10162,
+            "minLevel": 0,
+            "tileOverlap": 0,
+            "tileSize": 64,
+            "width": 9388
+        }
+    ]
+}
+
+      const array = ['montac','tac','tactree','honey']
+      const modal = new Vue({
+        el : '#modal',
+        data : {
+          show : false
+        },
+        methods : {
+          closeModal : function(){
+            this.show = false
+          }
+        }
+      })
+
+      const autocomplete = new Vue({
+        el : '#autocomplete',
+        data : {
+          placeholder : 'Search for brain id and slice number ...',
+          autocompleteArray : array
+        }
+      })
+
+      autocomplete.$on('selectslice',name => autocomplete.placeholder = name)
+      
+      const copyfield = new Vue({
+        el : '#copyfield',
+        data : {
+          value : 'copyfield test'
+        }
+      })
+
+      const readmore = new Vue({
+          el : '#readmore'
+      })
+
+      const checkbox = new Vue({
+          el: '#checkbox',
+          data: {
+            flag: true
+          },
+          methods: {
+            togglecheckbox: function(event){
+              this.flag = !this.flag
+            }
+          }
+      })
+
+      const mainside = new Vue({
+        el: '#mainside',
+        data: function () {
+          return {
+            position: 'top',
+            sidebarSize: 150,
+            collapse: false
+          }
+        },
+        methods: {
+          toggle: function () {
+            this.collapse = !this.collapse
+          }
+        }
+      })
+    </script>
+  </footer>
+</html>
