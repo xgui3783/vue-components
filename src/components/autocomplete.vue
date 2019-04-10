@@ -1,21 +1,22 @@
 <template>
-<div class = "autocomplete-container">
+<div class="autocomplete-container">
   <input
-    ref = "input"
-    @keydown.stop = "hitEnter"
-    type = "text"
-    @focus = "showSuggestions = true"
-    @blur = "showSuggestions = false"
-    v-model = "typedText"
-    :placeholder = "placeholder"/>
-  <transition name = "fade">
-    <div v-if = "showSuggestions" class = "autocomplete-suggestion-container">
+    ref="input"
+    v-bind="$attrs"
+    @keydown.stop="hitEnter"
+    type="text"
+    @focus="showSuggestions = true"
+    @blur="showSuggestions = false"
+    v-model="typedText"
+    :placeholder="placeholder"/>
+  <transition name="fade">
+    <div v-if="showSuggestions" class="autocomplete-suggestion-container">
       <div
         @mousedown="selectSlice(item)"
-        class = "autocomplete-suggestions"
-        :class = "{active : ((highlightIndex % filteredArray.length) === index)}"
-        v-bind:key = "index"
-        v-for = "(item,index) in filteredArray">
+        class="autocomplete-suggestions"
+        :class="{active : ((highlightIndex % filteredArray.length) === index)}"
+        v-bind:key="index"
+        v-for="(item,index) in filteredArray">
         {{ item }}
       </div>
     </div>
@@ -25,6 +26,7 @@
 
 <script>
 export default {
+  inheritAttrs: false,
   props: {
     placeholder: {
       type: String,
@@ -49,6 +51,9 @@ export default {
       this.$emit('selectslice', item)
     },
     hitEnter: function () {
+      /**
+       * TODO why .stop ?
+       */
       switch (event.key) {
         case 'ArrowDown':
           this.highlightIndex += 1
