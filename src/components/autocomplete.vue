@@ -92,7 +92,7 @@ export default {
       return this.typedText.toLowerCase()
     },
     filteredArray: function () {
-      const regex = new RegExp(`^${this.typedText}`, 'i')
+      const regex = new RegExp(`${this.searchFromStart ? '^' : ''}${this.typedText}`, 'i')
       const completeMatch = this.rawarray.find(item => item.toLowerCase() === this.typedTextLowerCase)
       const othermatches = this.rawarray
         .filter(item => regex.test(item))
