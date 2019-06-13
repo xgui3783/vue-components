@@ -101,13 +101,18 @@
     </div>
     <hr />
     <div id = "autocomplete">
-      <vue-autocomplete 
-        @selectslice = "$emit('selectslice',$event)"
-        :rawarray = "autocompleteArray" 
-        :placeholder = "placeholder" 
-        ref = "autocomplete">
+      <div>
 
-      </vue-autocomplete>
+        <vue-autocomplete 
+          @focusin.native="onFocus"
+          @keyup.native="onFocus"
+          @selectslice="$emit('selectslice',$event)"
+          :rawarray="autocompleteArray" 
+          :placeholder="placeholder" 
+          ref="autocomplete">
+  
+        </vue-autocomplete>
+      </div>
     </div>
     <hr />
     <div id = "copyfield">
@@ -193,8 +198,16 @@
       const autocomplete = new Vue({
         el : '#autocomplete',
         data : {
-          placeholder : 'Search for brain id and slice number ...',
+          placeholder : 'test placeholder ...',
           autocompleteArray : array
+        },
+        mounted: function () {
+          console.log('auto complete mounted')
+        },
+        methods:{
+          onFocus: function () {
+            console.log('focus')
+          }
         }
       })
 
@@ -237,10 +250,6 @@
             this.collapse = !this.collapse
           }
         }
-      })
-
-      const readmoreAnchor = new Vue({
-        el: '#readmoreAnchor'
       })
     </script>
   </footer>

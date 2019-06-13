@@ -5,6 +5,7 @@
     v-bind="$attrs"
     @keydown.stop="hitEnter"
     type="text"
+    autocomplete="off"
     @focus="showSuggestions = true"
     @blur="showSuggestions = false"
     v-model="typedText"
