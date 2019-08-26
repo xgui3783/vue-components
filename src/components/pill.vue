@@ -23,11 +23,12 @@ module.exports = {
 <style scoped>
 div.v-pill-container
 {
-  display:inline-block;
+  display:flex;
   white-space: nowrap;
   margin:5px;
   padding:0.2em 0.6em;
   border-radius: 0.8em;
+  max-width: 100%;
 }
 
 div.v-pill-container
@@ -46,11 +47,16 @@ span.v-pill-name
 {
   cursor: default;
   display:inline-block;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1 1 0;
 }
 span.v-pill-remove
 {
   cursor: default;
   display:inline-block;
+  flex: 0 0 auto;
 }
 
 span.v-pill-remove:hover
