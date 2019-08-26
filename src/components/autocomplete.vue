@@ -3,7 +3,7 @@
   <input
     ref="input"
     v-bind="$attrs"
-    @keydown.stop="hitEnter"
+    @keydown.prevent.stop="hitEnter"
     type="text"
     autocomplete="off"
     @focus="showSuggestions = true"
