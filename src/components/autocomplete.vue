@@ -76,7 +76,8 @@ export default {
             this.typedText = ''
             const el = document.querySelector(':focus')
             if (el) el.blur()
-            this.selectSlice(array[0])
+            this.selectSlice(array[this.highlightIndex % array.length])
+            this.highlightIndex = 0
           }
           break
         default:

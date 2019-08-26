@@ -182,7 +182,7 @@
   </body>
   <footer>
     <script>
-      const array = ['montac','tac','tactree','honey']
+      const array = Array(100).fill(null).map((v, idx) => idx.toString())
       const modal = new Vue({
         el : '#modal',
         data : {
